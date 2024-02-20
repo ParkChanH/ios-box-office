@@ -45,14 +45,14 @@ struct Genre: Codable {
 
 struct Director: Codable {
     let peopleNm: String
-    let peopleNmEn: String?
+    let peopleNmEn: String
 }
 
 struct Actor: Codable {
     let peopleNm: String
-    let peopleNmEn: String?
-    let cast: String?
-    let castEn: String?
+    let peopleNmEn: String
+    let cast: String
+    let castEn: String
 }
 
 struct ShowType: Codable {
@@ -63,7 +63,7 @@ struct ShowType: Codable {
 struct Company: Codable {
     let companyCd: String
     let companyNm: String
-    let companyNmEn: String?
+    let companyNmEn: String
     let companyPartNm: String
 }
 
@@ -74,6 +74,6 @@ struct Audit: Codable {
 
 struct Staff: Codable {
     let peopleNm: String
-    let peopleNmEn: String?
+    let peopleNmEn: String
     let staffRoleNm: String
 }

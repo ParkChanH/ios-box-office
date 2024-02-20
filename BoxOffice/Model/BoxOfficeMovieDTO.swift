@@ -12,4 +12,5 @@ struct BoxOfficeMovieDTO {
     let movieName: String
     let openDate: String
     let audienceCount: String
+    let movicode: String
 }
