@@ -2,7 +2,7 @@
 //  BoxOfficeMovieDTO.swift
 //  BoxOffice
 //
-//  Created by 박찬호 on 2/16/24.
+//  Created by 박찬호 on 2/20/24.
 //
 
 import Foundation
