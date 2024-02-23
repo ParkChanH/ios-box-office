@@ -10,11 +10,10 @@ import Foundation
 struct MovieDatailDTO {
     let movieCode: String
     let movieName: String
-    let movieNameEnglish: String
+    let movieNameEn: String
     let runningTime: String
     let productionYear: String
     let openDate: String
-    let status: String
     let movieType: String
     let genres: [String]
     let directors: [String]
