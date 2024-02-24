@@ -5,17 +5,17 @@
 //  Created by Jin-Mac on 2/14/24.
 //
 
-struct BoxOfficeData: Codable {
+struct BoxOfficeData: Decodable {
     let boxOfficeResult: BoxOfficeResult
 }
 
-struct BoxOfficeResult: Codable {
+struct BoxOfficeResult: Decodable {
     let boxofficeType: String
     let showRange: String
     let dailyBoxOfficeList: [DailyBoxOfficeList]
 }
 
-struct DailyBoxOfficeList: Codable {
+struct DailyBoxOfficeList: Decodable {
     let number: String
     let rank: String
     let rankIncrement: String
@@ -55,7 +55,7 @@ struct DailyBoxOfficeList: Codable {
     }
 }
 
-enum RankOldAndNew: String, Codable {
+enum RankOldAndNew: String, Decodable {
     case new = "NEW"
     case old = "OLD"
 }

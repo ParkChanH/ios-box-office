@@ -38,7 +38,7 @@ struct MovieInfo: Codable {
         case movieCode = "movieCd"
         case movieName = "movieNm"
         case movieNameEn = "movieNmEn"
-        case movieNameOrigin = "movieNeOg"
+        case movieNameOrigin = "movieNmOg"
         case productionYear = "prdtYear"
         case runningTime = "showTm"
         case openDate = "openDt"

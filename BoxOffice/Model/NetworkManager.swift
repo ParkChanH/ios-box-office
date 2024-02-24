@@ -44,10 +44,8 @@ enum RequestType: CustomStringConvertible {
     }
 }
 
-typealias NetworkResult = ((Result<Data, NetworkError>) -> Void)
-
 protocol NetworkManagerProtocol {
-    func request(request type: RequestType, url: String, body: Data?, completion: @escaping NetworkResult)
+    func request(request type: RequestType, url: URL, body: Data?, completion: @escaping ((Result<(Data?, HTTPURLResponse), NetworkError>) -> Void))
 }
 
 final class NetworkManager: NetworkManagerProtocol {
@@ -58,10 +56,8 @@ final class NetworkManager: NetworkManagerProtocol {
         self.session = session
     }
     
-    func request(request type: RequestType = .get, url: String, body: Data?, completion: @escaping NetworkResult) {
-        guard let url = URL(string: url) else {
-            return completion(.failure(.invalidURL))
-        }
+    func request(request type: RequestType = .get, url: URL, body: Data?, completion: @escaping ((Result<(Data?, HTTPURLResponse), NetworkError>) -> Void)) {
+        
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = type.description
         urlRequest.httpBody = body
@@ -76,35 +72,13 @@ final class NetworkManager: NetworkManagerProtocol {
                 completion(.failure(.unsuccessfulResponse))
                 return
             }
-            guard (200..<300).contains(response.statusCode) else {
-                switch response.statusCode {
-                case 100..<200:
-                    completion(.failure(.unsuccessfulResponse))
-                    return
-                case 300..<400:
-                    completion(.failure(.unsuccessfulResponse))
-                    return
-                case 400..<500:
-                    completion(.failure(.unsuccessfulResponse))
-                    return
-                case 500..<600:
-                    completion(.failure(.unsuccessfulResponse))
-                    return
-                default:
-                    completion(.failure(.unknownError(message: error?.localizedDescription ?? "Unkown")))
-                    return
-                }
+            
+            if !(200...500).contains(response.statusCode) {
+                // 서버통신 실패
+                completion(.failure(.unsuccessfulResponse))
             }
-            guard let data = data else {
-                completion(.failure(.APIInvalidResponse))
-                return
-            }
-            completion(.success(data))
+            
+            completion(.success((data, response)))
         }.resume()
     }
-}
-
-struct JsonManager {
-    let network = NetworkManagerProtocol()
-    
 }
