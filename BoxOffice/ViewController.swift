@@ -7,27 +7,40 @@
 
 import UIKit
 
-class ViewController: UIViewController {
 
+
+class ViewController: UIViewController {
+    
     let jsonManager = JsonManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        jsonManager.fetchFromServer(path: "", query: URLQueryItem(name: "", value: ""), 
+        fetchBoxOfficeData()
+        
+    }
+    
+    func fetchBoxOfficeData() {
+        let urlPath  = "/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json"
+        let queryItems = [
+            URLQueryItem(name: "key", value: "f5eef3421c602c6cb7ea224104795888"),
+            URLQueryItem(name: "targetDt", value: "20211011")]
+        jsonManager.fetchFromServer(path: urlPath, query: queryItems,
                                     type: BoxOfficeData.self) { networkResult in
             switch networkResult {
             case .success(let data):
-                print(data)
+                let boxoffice = data as! BoxOfficeData
+                print(boxoffice.boxOfficeResult.dailyBoxOfficeList[0].movieName)
             case .requestError(_):
-                
+                return
             case .pathError:
-                <#code#>
-            case .serverError:
-                <#code#>
+                return
+            case .InternalServerError:
+                return
             case .networkFail:
-                <#code#>
+                return
             }
         }
     }
 }
+
 

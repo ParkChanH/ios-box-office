@@ -31,15 +31,12 @@ struct JsonManager {
 //        }
 //    }
     
-    func fetchFromServer<T: Decodable>(path: String, query: URLQueryItem, type: T.Type, completion: @escaping (NetworkResult<Any>) -> Void) {
+    func fetchFromServer<T: Decodable>(path: String, query: [URLQueryItem], type: T.Type, completion: @escaping (NetworkResult<Any>) -> Void) {
         var urlComponents = URLComponents()
         urlComponents.scheme = "http"
         urlComponents.host = "kobis.or.kr"
-        urlComponents.path = "/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json"
-        urlComponents.queryItems = [
-            URLQueryItem(name: "key", value: "f5eef3421c602c6cb7ea224104795888"),
-            URLQueryItem(name: "targetDt", value: "20211011")
-        ]
+        urlComponents.path = path
+        urlComponents.queryItems = query
         guard let url = urlComponents.url else { print("badUrl"); return }
         
 //        var pasingData: Data = Data()
@@ -72,7 +69,7 @@ enum NetworkResult<T> {
     case success(T)
     case requestError(T)
     case pathError
-    case serverError
+    case InternalServerError
     case networkFail
 }
 
@@ -89,8 +86,8 @@ func judgeStatus<T: Decodable>(by statusCode: Int, _ data: Data?, type: T.Type) 
         return .success(decodedData)
     case 400..<500:
         return .requestError(decodedData)
-    case 500:
-        return .serverError
+    case 500..<600:
+        return .InternalServerError
     default:
         return .networkFail
     }
