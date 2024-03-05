@@ -28,8 +28,9 @@ class ViewController: UIViewController {
                                     type: BoxOfficeData.self) { networkResult in
             switch networkResult {
             case .success(let data):
+                print(type(of: data))
                 let boxoffice = data as! BoxOfficeData
-                print(boxoffice.boxOfficeResult.dailyBoxOfficeList[0].movieName)
+                print(boxoffice)
             case .requestError(_):
                 return
             case .pathError:

@@ -31,7 +31,7 @@ struct JsonManager {
 //        }
 //    }
     
-    func fetchFromServer<T: Decodable>(path: String, query: [URLQueryItem], type: T.Type, completion: @escaping (NetworkResult<Any>) -> Void) {
+    func fetchFromServer<T: Decodable>(path: String, query: [URLQueryItem], type: T.Type, completion: @escaping (NetworkResult<T>) -> Void) {
         var urlComponents = URLComponents()
         urlComponents.scheme = "http"
         urlComponents.host = "kobis.or.kr"
@@ -43,8 +43,8 @@ struct JsonManager {
         network.request(request: .get, url: url, body: nil) { result in
             switch result {
             case .success((let data, let response)):
-                let networkResult = judgeStatus(by: response.statusCode, data, type: T.self)
-                completion(.success(networkResult))
+                let networkResult = judgeStatus(by: response.statusCode, data, type: type)
+                completion(networkResult)
                 
             case .failure(_):
                 completion(.networkFail)
